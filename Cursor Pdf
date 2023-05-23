@@ -1,7 +1,7 @@
 Assignment7: Cursor Implementation.
 
-In this assignment we are fetching records in the emp table to insert it into the table emp_sal without performing insert operation emp_sal table.
-So ,To perform this here we required the concept of cursor
+In this assignment we are fetching records from the emp table to insert it into the table emp_sal without performing insert operation on emp_sal table.
+So ,To perform this sort of opration here we required the concept of cursor
 
 The cursor implementation :
 delimiter //
