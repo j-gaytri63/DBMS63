@@ -1,0 +1,86 @@
+Assignment7: Cursor Implementation.
+
+In this assignment we are fetching records in the emp table to insert it into the table emp_sal without performing insert operation emp_sal table.
+So ,To perform this here we required the concept of cursor
+
+The cursor implementation :
+delimiter //
+create procedure emp_cpy()
+begin
+	declare vfinished int default 0;
+	declare  e int;
+	declare n varchar(25);
+	declare s float;
+	use DBMS;
+	declare emp_i cursor for select * from emp;
+	declare continue handler for not found set vfinished=1;
+	
+open emp_i;
+ getdata:loop
+     fetch  emp_i into e,n,s;
+     if vfinished=1 then
+     leave getdata;
+     end if;
+    
+    insert into emp_sal values(e,n,s);
+    end loop getdata;
+    close emp_i;
+    end;
+    //
+    
+ Database Results:
+mysql> desc emp;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| eno   | int         | NO   | PRI | NULL    |       |
+| ename | varchar(25) | YES  |     | NULL    |       |
+| esal  | float       | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc emp_sal;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| eno   | int         | NO   | PRI | NULL    |       |
+| ename | varchar(25) | YES  |     | NULL    |       |
+| esal  | float       | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select *from emp;
++-----+---------+-------+
+| eno | ename   | esal  |
++-----+---------+-------+
+|   1 | Ram     | 45000 |
+|   2 | Radha   | 65000 |
+|   3 | Anuja   | 65000 |
+|   4 | Arya    | 55000 |
+|   5 | Rutika  | 59000 |
+|   6 | Kartiki | 90000 |
++-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> select *from emp_sal;
+Empty set (0.00 sec)
+mysql> source /home/student/Cursor63.sql
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> call emp_cpy();
+    -> //
+Query OK, 0 rows affected (0.51 sec)
+
+mysql> select * from emp_sal;
+    -> //
++-----+---------+-------+
+| eno | ename   | esal  |
++-----+---------+-------+
+|   1 | Ram     | 45000 |
+|   2 | Radha   | 65000 |
+|   3 | Anuja   | 65000 |
+|   4 | Arya    | 55000 |
+|   5 | Rutika  | 59000 |
+|   6 | Kartiki | 90000 |
++-----+---------+-------+
+6 rows in set (0.00 sec)
